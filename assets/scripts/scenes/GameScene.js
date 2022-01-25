@@ -10,7 +10,7 @@ class GameScene extends Phaser.Scene {
         this.createCoins();
         this.createPlayer();
         this.createEvents();
-        //this.createCamera();
+        this.createCamera();
     }
 
     update() {
@@ -94,7 +94,7 @@ class GameScene extends Phaser.Scene {
             frames: [
                 { key: 'pl2'}
             ],
-            frameRate: 9,
+            frameRate: 1,
             repeat: -1
         });
         this.anims.create({
@@ -102,7 +102,7 @@ class GameScene extends Phaser.Scene {
             frames: [
                 { key: 'pl1'}
             ],
-            frameRate: 9,
+            frameRate: 1,
             repeat: -1
         });
 
