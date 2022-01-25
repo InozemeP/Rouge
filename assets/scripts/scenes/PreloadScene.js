@@ -14,6 +14,6 @@ class PreloadScene extends Phaser.Scene {
     //     this.load.atlas('boom', 'assets/sprites/boom.png', 'assets/sprites/boom.json');
     // }
     create() {
-        this.scene.start('Game');
+        this.scene.start('Start');
     }
 }

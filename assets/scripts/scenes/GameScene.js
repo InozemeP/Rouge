@@ -6,13 +6,12 @@ class GameScene extends Phaser.Scene {
     create() {
         this.score = 0;
         this.createBackground();
-        this.createText();
         this.createWalls();
         this.createStaticObjects()
         this.createCoins();
         this.createPlayer();
         this.createEvents();
-
+        //this.createCamera();
     }
 
     update() {
@@ -33,12 +32,6 @@ class GameScene extends Phaser.Scene {
         this.bg = this.add.sprite(0, 0, 'bg').setOrigin(0);
     }
 
-    createText() {
-         this.text = this.add.text(380, 15, `Score: ${this.score}`, {
-            font: '15px CurseCasual',
-            fill: '#FFFFFF'
-        });
-    }
 
     createWalls() {
         this.walls = this.physics.add.staticGroup();
@@ -106,12 +99,16 @@ class GameScene extends Phaser.Scene {
     collectCoin(player, coin) {
         coin.disableBody(true, true);
 
-        this.score += 10;
-        this.text.setText(`Score: ${this.score}`);
-        console.log(this.score);
+        if (this.coins.countActive(true) === 0) {
+            this.scene.start('Start');
+        }
     }
 
     createEvents() {
         this.cursors = this.input.keyboard.createCursorKeys();
+    }
+
+    createCamera() {
+        this.cameras.main.startFollow(this.player, true, 0.09, 0.09).setZoom(1);
     }
 }
