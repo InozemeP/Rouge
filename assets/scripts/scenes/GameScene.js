@@ -4,7 +4,6 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.score = 0;
         this.createBackground();
         this.createWalls();
         this.createStaticObjects()
@@ -16,11 +15,15 @@ class GameScene extends Phaser.Scene {
 
     update() {
         this.player.setVelocity(0);
+
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-100);
+            this.player.play('left');
         } else if (this.cursors.right.isDown) {
             this.player.setVelocityX(100);
+            this.player.play('right');
         }
+
         if (this.cursors.up.isDown) {
             this.player.setVelocityY(-100);
         } else if (this.cursors.down.isDown) {
@@ -31,7 +34,6 @@ class GameScene extends Phaser.Scene {
     createBackground() {
         this.bg = this.add.sprite(0, 0, 'bg').setOrigin(0);
     }
-
 
     createWalls() {
         this.walls = this.physics.add.staticGroup();
@@ -84,18 +86,33 @@ class GameScene extends Phaser.Scene {
         this.staticObjects.create(370, 174, 'box');
         this.staticObjects.create(260, 177, 'box');
         this.staticObjects.create(260, 245, 'box');
-
-
     }
 
     createPlayer() {
-        this.player = this.physics.add.sprite(450, 120, 'pl');
+        this.anims.create({
+            key: 'left',
+            frames: [
+                { key: 'pl2'}
+            ],
+            frameRate: 9,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'right',
+            frames: [
+                { key: 'pl1'}
+            ],
+            frameRate: 9,
+            repeat: -1
+        });
+
+        this.player = this.physics.add.sprite(450, 120, 'pl1');
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, this.staticObjects);
         this.physics.add.collider(this.player, this.walls);
         this.physics.add.overlap(this.player, this.coins, this.collectCoin, null, this);
     }
-    h
+
     collectCoin(player, coin) {
         coin.disableBody(true, true);
 

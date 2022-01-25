@@ -4,8 +4,10 @@ class BootScene extends Phaser.Scene {
     }
     preload() {
         this.load.image('bg', 'assets/sprites/background.png');
-        this.load.image('pl', 'assets/sprites/player.png');
-        this.load.image('luk', 'assets/sprites/luk.png');
+
+        this.load.image('pl1', 'assets/sprites/player1.png');
+        this.load.image('pl2', 'assets/sprites/player2.png');
+
         this.load.image('topWall', 'assets/sprites/topWall.png');
         this.load.image('botWall', 'assets/sprites/botWall.png');
         this.load.image('leftWall', 'assets/sprites/leftWall.png');
