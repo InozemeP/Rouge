@@ -6,6 +6,7 @@ class GameScene extends Phaser.Scene {
     create() {
         this.score = 0;
         this.createBackground();
+        this.createText();
         this.createWalls();
         this.createStaticObjects()
         this.createCoins();
@@ -30,6 +31,13 @@ class GameScene extends Phaser.Scene {
 
     createBackground() {
         this.bg = this.add.sprite(0, 0, 'bg').setOrigin(0);
+    }
+
+    createText() {
+         this.text = this.add.text(380, 15, `Score: ${this.score}`, {
+            font: '15px CurseCasual',
+            fill: '#FFFFFF'
+        });
     }
 
     createWalls() {
@@ -88,7 +96,7 @@ class GameScene extends Phaser.Scene {
     }
 
     createPlayer() {
-        this.player = this.physics.add.sprite(config.width / 2, config.height / 2, 'pl');
+        this.player = this.physics.add.sprite(450, 120, 'pl');
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, this.staticObjects);
         this.physics.add.collider(this.player, this.walls);
@@ -99,6 +107,7 @@ class GameScene extends Phaser.Scene {
         coin.disableBody(true, true);
 
         this.score += 10;
+        this.text.setText(`Score: ${this.score}`);
         console.log(this.score);
     }
 
