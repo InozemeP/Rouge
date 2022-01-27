@@ -8,6 +8,12 @@ class BootScene extends Phaser.Scene {
         this.load.image('pl1', 'assets/sprites/player1.png');
         this.load.image('pl2', 'assets/sprites/player2.png');
 
+        this.load.image('skull1', 'assets/sprites/skull1.png');
+        this.load.image('skull2', 'assets/sprites/skull2.png');
+
+        this.load.image('skeleton1', 'assets/sprites/skeleton1.png');
+        this.load.image('skeleton2', 'assets/sprites/skeleton2.png');
+
         this.load.image('topWall', 'assets/sprites/topWall.png');
         this.load.image('botWall', 'assets/sprites/botWall.png');
         this.load.image('leftWall', 'assets/sprites/leftWall.png');
@@ -24,9 +30,6 @@ class BootScene extends Phaser.Scene {
         this.load.image('hor', 'assets/sprites/hor.png');
         this.load.image('horTop', 'assets/sprites/horTop.png');
         this.load.image('box', 'assets/sprites/box.png');
-
-
-
     }
     create() {
         this.scene.start('Preload');

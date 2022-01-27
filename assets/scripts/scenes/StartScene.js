@@ -12,8 +12,8 @@ class StartScene extends Phaser.Scene {
         this.add.sprite(0, 0, 'bg').setOrigin(0);
     }
     createText() {
-        this.add.text(config.width / 2, 250, 'Tap to start', {
-            font: '15px CurseCasual',
+        this.add.text(config.width / 2, 150, 'Tap to start', {
+            font: '40px CurseCasual',
             fill: '#FFFFFF'
         }).setOrigin(0.5);
     }
