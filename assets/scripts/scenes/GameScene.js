@@ -19,14 +19,90 @@ class GameScene extends Phaser.Scene {
         this.createCamera();
     };
 
-    update() {
-        this.playerMove();
-        this.skeletonsMove();
-        this.skullsMove();
-        this.skull1Move();
-        this.text.setText(`Coins left: ${this.coins.countActive(true)}`)
+    createBackground() {
+        this.bg = this.add.sprite(0, 0, 'bg').setOrigin(0);
     };
+    createWalls() {
+        this.walls = this.physics.add.staticGroup();
+        this.walls.create(0, config.height - 10, 'leftWall').setOrigin(0, 1).refreshBody();
+        this.walls.create(config.width - 10, config.height - 10, 'rightWall').setOrigin(0, 1).refreshBody();
+        this.walls.create(0, 0, 'topWall').setOrigin(0).refreshBody();
+        this.walls.create(0, config.height, 'botWall').setOrigin(0, 1).refreshBody();
+    };
+    createCoins() {
+        this.coins = this.physics.add.staticGroup();
 
+        for(let i = 44; i < 105; i = i + 15) {
+            this.coins.create(i, 277, 'coin_1').play('coinAnimation');
+        }
+
+        for(let i = 20; i < 66; i = i + 15) {
+            this.coins.create(i, 22, 'coin_1').play('coinAnimation');
+        }
+
+        for(let i = 245; i < 276; i = i + 15) {
+            this.coins.create(i, 211, 'coin_1').play('coinAnimation');
+        }
+
+        for(let i = 450; i < 481; i = i + 15) {
+            this.coins.create(i, 275, 'coin_1').play('coinAnimation');
+        }
+
+        for(let i = 21; i < 67; i = i + 15) {
+            this.coins.create(387, i, 'coin_1').play('coinAnimation');
+        }
+
+        for(let i = 402; i < 478; i = i + 15) {
+            this.coins.create(i, 21, 'coin_1').play('coinAnimation');
+        }
+
+        this.coins.create(400, 225, 'coin_1').play('coinAnimation');
+    };
+    createStaticObjects() {
+        this.staticObjects = this.physics.add.staticGroup();
+        this.staticObjects.create(74, 215, 'home');
+        this.staticObjects.create(80, 38, 'bord');
+        this.staticObjects.create(426, 255, 'hor');
+        this.staticObjects.create(370, 230, 'horTop');
+        this.staticObjects.create(370, 46, 'horTop');
+        this.staticObjects.create(370, 174, 'box');
+        this.staticObjects.create(260, 177, 'box');
+        this.staticObjects.create(260, 245, 'box');
+    };
+    createPlayer() {
+        this.player = this.physics.add.sprite(450, 120, 'pl1').setCollideWorldBounds(true);
+    };
+    createColliders() {
+        this.physics.add.collider(this.player, this.staticObjects);
+        this.physics.add.collider(this.player, this.walls);
+        this.physics.add.overlap(this.player, this.coins, this.collectCoin, null, this);
+        this.physics.add.overlap(this.player, this.skeletons, this.death, null, this);
+        this.physics.add.overlap(this.player, this.skulls, this.death, null, this);
+    };
+    createCamera() {
+        this.cameras.main.startFollow(this.player, false, 0.09, 0.09).setZoom(1.5);
+    };
+    createEnemiesSkeletons() {
+        this.skeletons = this.physics.add.group();
+
+        this.skeleton1 = this.skeletons.create(155, 277, 'skeleton1');
+        this.skeleton2 = this.skeletons.create(195, 23, 'skeleton1');
+        this.skeleton3 = this.skeletons.create(400, 277, 'skeleton1');
+    };
+    createEnemiesSkulls() {
+        this.skulls = this.physics.add.group();
+
+        this.skull1 = this.skulls.create(386, 240, 'skull1');
+        this.skull2 = this.skulls.create(240, 211, 'skull1');
+        this.skull3 = this.skulls.create(370, 86, 'skull1');
+
+    };
+    createTextOfCoinsRemaining() {
+        this.text = this.add.text(295, 50,'', {
+            font: '10px Boby',
+            fill: '#FFFFFF'
+        }).setOrigin(0).setScrollFactor(0);
+    };
     createAnimations() {
         this.anims.create({
             key: 'coinAnimation',
@@ -91,6 +167,19 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         });
     };
+    createEvents() {
+        this.cursors = this.input.keyboard.createCursorKeys();
+    };
+
+
+    update() {
+        this.playerMove();
+        this.skeletonsMove();
+        this.skullsMove();
+        this.skull1Move();
+        this.text.setText(`Coins left: ${this.coins.countActive(true)}`);
+    };
+
 
     playerMove() {
         this.player.setVelocity(0);
@@ -110,7 +199,6 @@ class GameScene extends Phaser.Scene {
         }
     };
 
-
     skullsMove() {
         this.skull1Move();
         this.skull2Move();
@@ -121,14 +209,14 @@ class GameScene extends Phaser.Scene {
 
         if(this.k === 1) {
             this.skull1.setVelocityY(-140);
-            this.skull1.play('skullRight')
+            this.skull1.play('skullRight');
             if(this.skull1.y < 213){
                 this.k = 2;
             }
         }
 
         if(this.k === 2) {
-            this.skull1.setVelocityX(140)
+            this.skull1.setVelocityX(140);
             if(this.skull1.x > 420) {
                 this.k = 3;
             }
@@ -136,14 +224,14 @@ class GameScene extends Phaser.Scene {
 
         if(this.k === 3) {
             this.skull1.setVelocityY(140);
-            this.skull1.play('skullLeft')
+            this.skull1.play('skullLeft');
             if(this.skull1.y > 239) {
                 this.k = 4;
             }
         }
 
         if(this.k === 4) {
-            this.skull1.setVelocityX(-140)
+            this.skull1.setVelocityX(-140);
             if(this.skull1.x < 388) {
                 this.k = 1;
             }
@@ -167,7 +255,6 @@ class GameScene extends Phaser.Scene {
             this.skull3.setVelocityY(90);
         }
     };
-
 
     skeletonsMove() {
         this.skeleton1Move();
@@ -208,73 +295,6 @@ class GameScene extends Phaser.Scene {
     };
 
 
-    createBackground() {
-        this.bg = this.add.sprite(0, 0, 'bg').setOrigin(0);
-    };
-
-    createWalls() {
-        this.walls = this.physics.add.staticGroup();
-        this.walls.create(0, config.height - 10, 'leftWall').setOrigin(0, 1).refreshBody();
-        this.walls.create(config.width - 10, config.height - 10, 'rightWall').setOrigin(0, 1).refreshBody();
-        this.walls.create(0, 0, 'topWall').setOrigin(0).refreshBody();
-        this.walls.create(0, config.height, 'botWall').setOrigin(0, 1).refreshBody();
-    };
-
-    createCoins() {
-        this.coins = this.physics.add.staticGroup();
-        console.log(this.coins.children)
-
-        for(let i = 44; i < 105; i = i + 15) {
-            this.coins.create(i, 277, 'coin_1').play('coinAnimation');
-        }
-
-        for(let i = 20; i < 66; i = i + 15) {
-            this.coins.create(i, 22, 'coin_1').play('coinAnimation');
-        }
-
-        for(let i = 245; i < 276; i = i + 15) {
-            this.coins.create(i, 211, 'coin_1').play('coinAnimation');
-        }
-
-        for(let i = 450; i < 481; i = i + 15) {
-            this.coins.create(i, 275, 'coin_1').play('coinAnimation');
-        }
-
-        for(let i = 21; i < 67; i = i + 15) {
-            this.coins.create(387, i, 'coin_1').play('coinAnimation');
-        }
-
-        for(let i = 402; i < 478; i = i + 15) {
-            this.coins.create(i, 21, 'coin_1').play('coinAnimation');
-        }
-
-        this.coins.create(400, 225, 'coin_1').play('coinAnimation');
-    };
-
-    createStaticObjects() {
-        this.staticObjects = this.physics.add.staticGroup();
-        this.staticObjects.create(74, 215, 'home');
-        this.staticObjects.create(80, 38, 'bord');
-        this.staticObjects.create(426, 255, 'hor');
-        this.staticObjects.create(370, 230, 'horTop');
-        this.staticObjects.create(370, 46, 'horTop');
-        this.staticObjects.create(370, 174, 'box');
-        this.staticObjects.create(260, 177, 'box');
-        this.staticObjects.create(260, 245, 'box');
-    };
-
-    createPlayer() {
-        this.player = this.physics.add.sprite(450, 120, 'pl1').setCollideWorldBounds(true);
-    };
-
-    createColliders() {
-        this.physics.add.collider(this.player, this.staticObjects);
-        this.physics.add.collider(this.player, this.walls);
-        this.physics.add.overlap(this.player, this.coins, this.collectCoin, null, this);
-        this.physics.add.overlap(this.player, this.skeletons, this.death, null, this);
-        this.physics.add.overlap(this.player, this.skulls, this.death, null, this);
-    };
-
     death() {
         this.physics.pause();
         this.player.setTint(0xff0000);
@@ -312,38 +332,11 @@ class GameScene extends Phaser.Scene {
 
     };
 
-    createEvents() {
-        this.cursors = this.input.keyboard.createCursorKeys();
-    };
 
-    createCamera() {
-        this.cameras.main.startFollow(this.player, false, 0.09, 0.09).setZoom(1.5);
-        console.log(this.cameras)
-    };
 
-    createEnemiesSkeletons() {
-        this.skeletons = this.physics.add.group();
 
-        this.skeleton1 = this.skeletons.create(155, 277, 'skeleton1');
-        this.skeleton2 = this.skeletons.create(195, 23, 'skeleton1');
-        this.skeleton3 = this.skeletons.create(400, 277, 'skeleton1');
-    };
 
-    createEnemiesSkulls() {
-        this.skulls = this.physics.add.group();
 
-        this.skull1 = this.skulls.create(386, 240, 'skull1');
-        this.skull2 = this.skulls.create(240, 211, 'skull1');
-        this.skull3 = this.skulls.create(370, 86, 'skull1');
-
-    };
-
-    createTextOfCoinsRemaining() {
-        this.text = this.add.text(295, 50,'', {
-            font: '10px Boby',
-            fill: '#FFFFFF'
-        }).setOrigin(0).setScrollFactor(0);
-    };
 
 
 
