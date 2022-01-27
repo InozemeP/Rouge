@@ -7,14 +7,17 @@ class GameScene extends Phaser.Scene {
         this.k = 1;
         this.createBackground();
         this.createWalls();
+        this.createAnimations();
         this.createStaticObjects();
         this.createCoins();
         this.createPlayer();
         this.createEvents();
-        //this.createCamera();
         this.createEnemiesSkeletons();
         this.createEnemiesSkulls();
         this.createColliders();
+
+
+        this.createCamera();
     };
 
     update() {
@@ -22,6 +25,71 @@ class GameScene extends Phaser.Scene {
         this.skeletonsMove();
         this.skullsMove();
         this.skull1Move();
+    };
+
+    createAnimations() {
+        this.anims.create({
+            key: 'coinAnimation',
+            frames: [
+                { key: 'coin_1'},
+                { key: 'coin_2'},
+                { key: 'coin_3'},
+                { key: 'coin_4'}
+            ],
+            frameRate: 9,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'left',
+            frames: [
+                { key: 'pl2'}
+            ],
+            frameRate: 1,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'right',
+            frames: [
+                { key: 'pl1'}
+            ],
+            frameRate: 1,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'enLeft',
+            frames: [
+                { key: 'skeleton2'}
+            ],
+            frameRate: 1,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'enRight',
+            frames: [
+                { key: 'skeleton1'}
+            ],
+            frameRate: 1,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'skullLeft',
+            frames: [
+                {key: 'skull2'}
+            ],
+            frameRate: 1,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'skullRight',
+            frames: [
+                {key: 'skull1'}
+            ],
+            frameRate: 1,
+            repeat: -1
+        });
     };
 
     playerMove() {
@@ -46,6 +114,7 @@ class GameScene extends Phaser.Scene {
     skullsMove() {
         this.skull1Move();
         this.skull2Move();
+        this.skull3Move();
     };
     skull1Move() {
         this.skull1.setVelocity(0);
@@ -90,13 +159,21 @@ class GameScene extends Phaser.Scene {
             this.skull2.play('skullRight');
         }
     };
+    skull3Move() {
+        if (this.skull3.y >= 140) {
+            this.skull3.setVelocityY(-90);
+        }
+        else if (this.skull3.y <= 86) {
+            this.skull3.setVelocityY(90);
+        }
+    };
 
 
     skeletonsMove() {
         this.skeleton1Move();
         this.skeleton2Move();
+        this.skeleton3Move();
     };
-
     skeleton1Move() {
 
         if (this.skeleton1.x >= 155) {
@@ -108,7 +185,6 @@ class GameScene extends Phaser.Scene {
             this.skeleton1.play('enRight');
         }
     };
-
     skeleton2Move() {
 
         if (this.skeleton2.x >= 195) {
@@ -120,6 +196,16 @@ class GameScene extends Phaser.Scene {
             this.skeleton2.play('enRight');
         }
     };
+    skeleton3Move() {
+        if (this.skeleton3.x >= 400) {
+            this.skeleton3.setVelocityX(-100);
+            this.skeleton3.play('enLeft');
+        }
+        else if (this.skeleton3.x <= 300) {
+            this.skeleton3.setVelocityX(100);
+            this.skeleton3.play('enRight');
+        }
+    }
 
 
     createBackground() {
@@ -135,36 +221,31 @@ class GameScene extends Phaser.Scene {
     };
 
     createCoins() {
-        this.anims.create({
-            key: 'coinAnimation',
-            frames: [
-                { key: 'coin_1'},
-                { key: 'coin_2'},
-                { key: 'coin_3'},
-                { key: 'coin_4'}
-            ],
-            frameRate: 9,
-            repeat: -1
-        });
-
         this.coins = this.physics.add.staticGroup();
 
-        this.coins.create(57, 277, 'coin_1').play('coinAnimation');
-        this.coins.create(72, 277, 'coin_1').play('coinAnimation');
-        this.coins.create(87, 277, 'coin_1').play('coinAnimation');
-        this.coins.create(102, 277, 'coin_1').play('coinAnimation');
+        for(let i = 44; i < 105; i = i + 15) {
+            this.coins.create(i, 277, 'coin_1').play('coinAnimation');
+        }
 
-        this.coins.create(20, 22, 'coin_1').play('coinAnimation');
-        this.coins.create(35, 22, 'coin_1').play('coinAnimation');
-        this.coins.create(50, 22, 'coin_1').play('coinAnimation');
-        this.coins.create(65, 22, 'coin_1').play('coinAnimation');
+        for(let i = 20; i < 66; i = i + 15) {
+            this.coins.create(i, 22, 'coin_1').play('coinAnimation');
+        }
 
-        this.coins.create(245, 211, 'coin_1').play('coinAnimation');
-        this.coins.create(275, 211, 'coin_1').play('coinAnimation');
+        for(let i = 245; i < 276; i = i + 15) {
+            this.coins.create(i, 211, 'coin_1').play('coinAnimation');
+        }
 
-        this.coins.create(480, 275, 'coin_1').play('coinAnimation');
-        this.coins.create(465, 275, 'coin_1').play('coinAnimation');
-        this.coins.create(450, 275, 'coin_1').play('coinAnimation');
+        for(let i = 450; i < 481; i = i + 15) {
+            this.coins.create(i, 275, 'coin_1').play('coinAnimation');
+        }
+
+        for(let i = 21; i < 67; i = i + 15) {
+            this.coins.create(387, i, 'coin_1').play('coinAnimation');
+        }
+
+        for(let i = 402; i < 478; i = i + 15) {
+            this.coins.create(i, 21, 'coin_1').play('coinAnimation');
+        }
 
         this.coins.create(400, 225, 'coin_1').play('coinAnimation');
     };
@@ -182,25 +263,7 @@ class GameScene extends Phaser.Scene {
     };
 
     createPlayer() {
-        this.anims.create({
-            key: 'left',
-            frames: [
-                { key: 'pl2'}
-            ],
-            frameRate: 1,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'right',
-            frames: [
-                { key: 'pl1'}
-            ],
-            frameRate: 1,
-            repeat: -1
-        });
-
-        this.player = this.physics.add.sprite(450, 120, 'pl1');
-        this.player.setCollideWorldBounds(true);
+        this.player = this.physics.add.sprite(450, 120, 'pl1').setCollideWorldBounds(true);
     };
 
     createColliders() {
@@ -215,13 +278,15 @@ class GameScene extends Phaser.Scene {
         this.physics.pause();
         this.player.setTint(0xff0000);
 
-        this.add.text(config.width / 2, 150,`YOU LOOSE! Tap to restart`, {
-                font: '40px CurseCasual',
+        this.time.delayedCall(600, () => {
+            this.add.text(this.player.x, this.player.y,`YOU LOOSE! Tap to restart!`, {
+                font: '15px Boby',
                 fill: '#FFFFFF'
-        }).setOrigin(0.5);
+            }).setOrigin(0.5);
 
-        this.input.on('pointerdown', () => {
-            this.scene.start('Game');
+            this.input.on('pointerdown', () => {
+                this.scene.start('Game');
+            });
         });
     };
 
@@ -231,14 +296,17 @@ class GameScene extends Phaser.Scene {
         if (this.coins.countActive(true) === 0) {
             this.physics.pause();
 
-            this.add.text(config.width / 2, 150, `YOU WIN! Tap to restart`, {
-                    font: '40px CurseCasual',
+            this.time.delayedCall(600, () => {
+                this.add.text(this.player.x, this.player.y, `YOU WIN! Tap to restart`, {
+                    font: '15px Boby',
                     fill: '#FFFFFF'
-            }).setOrigin(0.5);
+                }).setOrigin(0.5);
 
-            this.input.on('pointerdown', () => {
-                this.scene.start('Game');
+                this.input.on('pointerdown', () => {
+                    this.scene.start('Game');
+                });
             });
+
         }
 
     };
@@ -248,56 +316,25 @@ class GameScene extends Phaser.Scene {
     };
 
     createCamera() {
-        this.cameras.main.startFollow(this.player, true, 0.09, 0.09).setZoom(1);
+        this.cameras.main.startFollow(this.player, false, 0.09, 0.09).setZoom(1.5);
     };
 
     createEnemiesSkeletons() {
-        this.anims.create({
-            key: 'enLeft',
-            frames: [
-                { key: 'skeleton2'}
-            ],
-            frameRate: 1,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'enRight',
-            frames: [
-                { key: 'skeleton1'}
-            ],
-            frameRate: 1,
-            repeat: -1
-        });
-
         this.skeletons = this.physics.add.group();
 
         this.skeleton1 = this.skeletons.create(155, 277, 'skeleton1');
         this.skeleton2 = this.skeletons.create(195, 23, 'skeleton1');
+        this.skeleton3 = this.skeletons.create(400, 277, 'skeleton1');
     };
 
     createEnemiesSkulls() {
-        this.anims.create({
-            key: 'skullLeft',
-            frames: [
-                {key: 'skull2'}
-            ],
-            frameRate: 1,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'skullRight',
-            frames: [
-                {key: 'skull1'}
-            ],
-            frameRate: 1,
-            repeat: -1
-        });
-
         this.skulls = this.physics.add.group();
 
         this.skull1 = this.skulls.create(386, 240, 'skull1');
         this.skull2 = this.skulls.create(240, 211, 'skull1');
-    }
+        this.skull3 = this.skulls.create(370, 86, 'skull1');
+
+    };
 
 
 
