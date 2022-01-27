@@ -15,8 +15,7 @@ class GameScene extends Phaser.Scene {
         this.createEnemiesSkeletons();
         this.createEnemiesSkulls();
         this.createColliders();
-
-
+        this.createTextOfCoinsRemaining();
         this.createCamera();
     };
 
@@ -25,6 +24,7 @@ class GameScene extends Phaser.Scene {
         this.skeletonsMove();
         this.skullsMove();
         this.skull1Move();
+        this.text.setText(`Coins left: ${this.coins.countActive(true)}`)
     };
 
     createAnimations() {
@@ -205,7 +205,7 @@ class GameScene extends Phaser.Scene {
             this.skeleton3.setVelocityX(100);
             this.skeleton3.play('enRight');
         }
-    }
+    };
 
 
     createBackground() {
@@ -222,6 +222,7 @@ class GameScene extends Phaser.Scene {
 
     createCoins() {
         this.coins = this.physics.add.staticGroup();
+        console.log(this.coins.children)
 
         for(let i = 44; i < 105; i = i + 15) {
             this.coins.create(i, 277, 'coin_1').play('coinAnimation');
@@ -317,6 +318,7 @@ class GameScene extends Phaser.Scene {
 
     createCamera() {
         this.cameras.main.startFollow(this.player, false, 0.09, 0.09).setZoom(1.5);
+        console.log(this.cameras)
     };
 
     createEnemiesSkeletons() {
@@ -334,6 +336,13 @@ class GameScene extends Phaser.Scene {
         this.skull2 = this.skulls.create(240, 211, 'skull1');
         this.skull3 = this.skulls.create(370, 86, 'skull1');
 
+    };
+
+    createTextOfCoinsRemaining() {
+        this.text = this.add.text(295, 50,'', {
+            font: '10px Boby',
+            fill: '#FFFFFF'
+        }).setOrigin(0).setScrollFactor(0);
     };
 
 
